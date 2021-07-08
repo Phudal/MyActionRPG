@@ -4,14 +4,74 @@
 
 #include "CoreMinimal.h"
 #include "Actor/Character/BaseCharacter.h"
+#include "Enum/PartsType.h"
+
 #include "PlayerCharacter.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class MYACTIONRPG_API APlayerCharacter : public ABaseCharacter
+class MYACTIONRPG_API APlayerCharacter final : public ABaseCharacter
 {
 	GENERATED_BODY()
+
+private:
+	TSubclassOf<class UPlayerCharacterAnimInst> BP_PlayerCharacterAnimInst;
+
+private:
+	UPROPERTY()
+	TMap<EPartsType, class USkeletalMeshComponent*> Parts;
+
+private:
+#pragma region Custom Components
+	UPROPERTY(VisibleAnywhere, meta = (AllowPrivateAccess = "true"))
+	class UZoomableSpringArmComponent* SpringArm;
+
+#pragma endregion
+
+#pragma region SkeletalMeshComponents
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	class USkeletalMeshComponent* HeadMesh;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	class USkeletalMeshComponent* HairMesh;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	class USkeletalMeshComponent* BeardMesh;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	class USkeletalMeshComponent* TopMesh;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	class USkeletalMeshComponent* BottomMesh;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	class USkeletalMeshComponent* RGloveMesh;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	class USkeletalMeshComponent* LGloveMesh;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	class USkeletalMeshComponent* ShoesMesh;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	class USkeletalMeshComponent* WeaponMesh;
 	
+#pragma endregion 
+
+public:
+	APlayerCharacter();
+
+public:
+	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+
+public:
+	void InitializeMeshs();
+
+	// TODO
+	// Component Getter
+
+private:
+	void RegularAttack();
 };
