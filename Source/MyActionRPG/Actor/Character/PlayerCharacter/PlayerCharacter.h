@@ -27,7 +27,14 @@ private:
 #pragma region Custom Components
 	UPROPERTY(VisibleAnywhere, meta = (AllowPrivateAccess = "true"))
 	class UZoomableSpringArmComponent* SpringArm;
+	
+	UPROPERTY(VisibleAnywhere, meta = (AllowPrivateAccess = "true"))
+	class UCameraComponent* Camera;
 
+	UPROPERTY(VisibleAnywhere, meta = (AllowPrivateAccess = "true"))
+	class UCharacterMovementHelperComponent* CharacterMovementHelper;
+	
+	
 #pragma endregion
 
 #pragma region SkeletalMeshComponents
@@ -71,6 +78,11 @@ public:
 
 	// TODO
 	// Component Getter
+
+	FORCEINLINE class UCharacterMovementHelperComponent* GetCharacterMovementHelper() const
+	{
+		return CharacterMovementHelper;
+	}
 
 private:
 	void RegularAttack();
