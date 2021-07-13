@@ -3,3 +3,10 @@
 
 #include "Single/PlayerManager/PlayerManager.h"
 
+void UPlayerManager::InitManagerClass()
+{
+}
+
+void UPlayerManager::ShutdownManagerClass()
+{
+}

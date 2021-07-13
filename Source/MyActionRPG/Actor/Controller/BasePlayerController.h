@@ -13,5 +13,8 @@ UCLASS()
 class MYACTIONRPG_API ABasePlayerController : public APlayerController
 {
 	GENERATED_BODY()
+
+//private:
+	// TSubclassOf<class UWidgetControllerWidget> BP_WidgetController;
 	
 };

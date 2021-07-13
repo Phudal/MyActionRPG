@@ -10,7 +10,8 @@
  * 
  */
 UCLASS()
-class MYACTIONRPG_API UZoomableSpringArmComponent : public USpringArmComponent
+class MYACTIONRPG_API UZoomableSpringArmComponent final :
+	public USpringArmComponent
 {
 	GENERATED_BODY()
 

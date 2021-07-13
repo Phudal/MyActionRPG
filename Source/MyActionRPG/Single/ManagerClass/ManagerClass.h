@@ -6,12 +6,19 @@
 #include "UObject/NoExportTypes.h"
 #include "ManagerClass.generated.h"
 
-/**
- * 
- */
-UCLASS()
-class MYACTIONRPG_API UManagerClass : public UObject
+#ifndef MANAGER_INSTANCE
+#define MANAGER_INSTANCE
+#define GetManager(ManagerClassType) (GetGameInst(GetWorld())->GetManagerClass<ManagerClassType>())
+
+#endif
+
+UCLASS(Abstract)
+class MYACTIONRPG_API UManagerClass :
+	public UObject
 {
 	GENERATED_BODY()
-	
+
+public:
+	FORCEINLINE virtual void InitManagerClass() { };
+	FORCEINLINE virtual void ShutdownManagerClass() { };
 };

@@ -33,6 +33,11 @@ APlayerCharacter::APlayerCharacter()
 	// TODO
 	// 컴포넌트 추가
 
+	CharacterMovementHelper = CreateDefaultSubobject<UCharacterMovementHelperComponent>(TEXT("MOVEMENT_HELPER"));
+	SpringArm = CreateDefaultSubobject<UZoomableSpringArmComponent>(TEXT("SPRING_ARM"));
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("CAMERA"));
+	Camera->SetConstraintAspectRatio(true);
+	
 	HeadMesh = GetMesh();
 	HairMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("HAIR_MESH"));
 	BeardMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("BEARD_MESH"));
@@ -113,10 +118,52 @@ APlayerCharacter::APlayerCharacter()
 
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	PlayerInputComponent->BindAction(TEXT("Run"), EInputEvent::IE_Pressed,
+		GetCharacterMovementHelper(), &UCharacterMovementHelperComponent::RunKeyPressed);
+
+	PlayerInputComponent->BindAction(TEXT("Run"), EInputEvent::IE_Released,
+		GetCharacterMovementHelper(), &UCharacterMovementHelperComponent::RunKeyReleased);
+
+	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed,
+		GetCharacterMovementHelper(), &UCharacterMovementHelperComponent::JumpKeyPressed);
+
+	//PlayerInputComponent->BindAction(TEXT("Interact"), EInputEvent::IE_Pressed,
+	//	GetPlayerInteract(), &UCharacterMovementHelperComponent::Try);
+
+	PlayerInputComponent->BindAction(TEXT("RegularAttack"), EInputEvent::IE_Pressed,
+		this, &APlayerCharacter::RegularAttack);
+
+	
+	PlayerInputComponent->BindAxis(TEXT("MouseWheel"),
+		SpringArm, &UZoomableSpringArmComponent::ZoomCamera);
+
+	PlayerInputComponent->BindAxis(TEXT("Horizontal"),
+		GetCharacterMovementHelper(), &UCharacterMovementHelperComponent::InputHorizontal);
+
+	PlayerInputComponent->BindAxis(TEXT("Vertical"),
+		GetCharacterMovementHelper(), &UCharacterMovementHelperComponent::InputVertical);
 }
 
 void APlayerCharacter::InitializeMeshs()
 {
+	// HeadMesh 의 정보를 다른 Skeletal Mehs 들이 받아서 공유도록 함
+	// HairMesh->SetMasterPoseComponent(HeadMesh);
+	BeardMesh->SetMasterPoseComponent(HeadMesh);
+	TopMesh->SetMasterPoseComponent(HeadMesh);
+	BottomMesh->SetMasterPoseComponent(HeadMesh);
+	RGloveMesh->SetMasterPoseComponent(HeadMesh);
+	LGloveMesh->SetMasterPoseComponent(HeadMesh);
+	ShoesMesh->SetMasterPoseComponent(HeadMesh);
+	WeaponMesh->SetMasterPoseComponent(HeadMesh);
+
+	HeadMesh->SetAnimClass(BP_PlayerCharacterAnimInst);
+	// 만약 BaseSkeletalMesh(HeadMesh) 가 사용하는 Skeleton 이 변경될 경우
+	// SetMasterPoseComponent 에 전달한 Mesh 와의 연결을 끊고, 
+	// ㄴ (Slave->SetMasterPoseComponent(nullptr))
+	// BaseSkeletalMesh 의 Skeletal Mesh 애셋을 설정한 뒤
+	// SetMasterPoseComponent 로 재연결 시켜야 함.
 }
 
 void APlayerCharacter::RegularAttack()
