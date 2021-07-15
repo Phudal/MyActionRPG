@@ -67,7 +67,7 @@ public:
 		return PlayerCharacter;
 	}
 
-	FORCEINLINE FPlayerCharacterInfo* GetPlayerCharacterInfo()
+	FORCEINLINE FPlayerCharacterInfo* GetPlayerInfo()
 	{
 		return &PlayerInfo;
 	}

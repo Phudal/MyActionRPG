@@ -168,15 +168,7 @@
 			"type": "vector1"
 		},
 		{
-			"name": "/actions/main/in/Turn axis",
-			"type": "vector1"
-		},
-		{
 			"name": "/actions/main/in/LookUpRate axis",
-			"type": "vector1"
-		},
-		{
-			"name": "/actions/main/in/LookUp axis",
 			"type": "vector1"
 		},
 		{
@@ -445,9 +437,7 @@
 			"/actions/main/in/MoveForward axis": "MoveForward",
 			"/actions/main/in/MoveRight axis": "MoveRight",
 			"/actions/main/in/TurnRate axis": "TurnRate",
-			"/actions/main/in/Turn axis": "Turn",
 			"/actions/main/in/LookUpRate axis": "LookUpRate",
-			"/actions/main/in/LookUp axis": "LookUp",
 			"/actions/main/in/MouseWheel axis": "MouseWheel",
 			"/actions/main/in/Horizontal axis": "Horizontal",
 			"/actions/main/in/Vertical axis": "Vertical",

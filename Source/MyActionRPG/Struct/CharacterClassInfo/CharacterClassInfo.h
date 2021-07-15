@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -13,11 +13,11 @@ struct MYACTIONRPG_API FCharacterClassInfo : public FTableRowBase
 	GENERATED_USTRUCT_BODY()
 
 public:
-	// Ä³¸¯ÅÍ Å¬·¡½º
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Å¬·¡½º")
+	// ìºë¦­í„° í´ë˜ìŠ¤
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "í´ë˜ìŠ¤")
 	ECharacterClassType ClassType;
 
-	// ±âº»À¸·Î ÀåÂøµÇ´Â Àåºñ ¾ÆÀÌÅÛ ÄÚµåµéÀ» ³ªÅ¸³¿
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "±âÅ¸")
+	// ê¸°ë³¸ìœ¼ë¡œ ì¥ì°©ë˜ëŠ” ì¥ë¹„ ì•„ì´í…œ ì½”ë“œë“¤ì„ ë‚˜íƒ€ëƒ„
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ê¸°íƒ€")
 	TArray<FName> DefaultEquipItemCodes;
 };

@@ -84,6 +84,12 @@ public:
 		return CharacterMovementHelper;
 	}
 
+	FORCEINLINE TMap<EPartsType, class USkeletalMeshComponent*>& GetParts()
+	{
+		return Parts;
+	}
+	
+
 private:
 	void RegularAttack();
 };
