@@ -108,7 +108,7 @@ APlayerCharacter::APlayerCharacter()
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 450.0f, 0.0f);
 
 	// Anim Instance 클래스 설정
-	// GetMesh()->SetAnimClass(BP_PlayerCharacterAnimInst);
+	GetMesh()->SetAnimClass(BP_PlayerCharacterAnimInst);
 
 	Tags.Add(PLAYER_ACTOR_TAG);
 
