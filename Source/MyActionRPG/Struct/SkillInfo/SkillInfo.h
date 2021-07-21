@@ -19,7 +19,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FName SkillCode;
 
-	// 스킬 이름
+	// 스킬 이름	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FName SkillName;
+	
+	// 스킬 설명
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FText SkillDescription;
 

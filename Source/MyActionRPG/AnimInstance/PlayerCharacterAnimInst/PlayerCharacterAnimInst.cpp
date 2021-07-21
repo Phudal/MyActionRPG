@@ -5,6 +5,7 @@
 
 #include "Actor/Character/PlayerCharacter/PlayerCharacter.h"
 #include "Component/CharacterMovementHelper/CharacterMovementHelperComponent.h"
+#include "Component/SkillControllerComponent/SkillControllerComponent.h"
 
 // TODO
 // SkillController Ãß°¡ 
@@ -25,20 +26,36 @@ void UPlayerCharacterAnimInst::NativeUpdateAnimation(float DeltaSeconds)
 
 void UPlayerCharacterAnimInst::AnimNotify_SkillFinished()
 {
+	if (!IsValid(Owner))
+		return;
+	Owner->GetSkillController()->SkillFinished();
 }
 
 void UPlayerCharacterAnimInst::AnimNotify_SetSkillRequestable()
 {
+	if (!IsValid(Owner))
+		return;
+	Owner->GetSkillController()->SetSkillRequestable(true);
 }
 
 void UPlayerCharacterAnimInst::AnimNotify_BlockSkillRequestable()
 {
+	if (!IsValid(Owner))
+		return;
+	Owner->GetSkillController()->SetSkillRequestable(false);
 }
 
 void UPlayerCharacterAnimInst::AnimNotify_MakeSkillRange()
 {
+	if (!IsValid(Owner))
+		return;
+	Owner->GetSkillController()->MakeSkillRange();
 }
 
 void UPlayerCharacterAnimInst::AnimNotify_MakeNextSkillRange()
 {
+	if (!IsValid(Owner))
+		return;
+	Owner->GetSkillController()->NextSkillRangeIndex();
+	Owner->GetSkillController()->MakeSkillRange();
 }

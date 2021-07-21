@@ -11,6 +11,7 @@
 
 #include "Component/CharacterMovementHelper/CharacterMovementHelperComponent.h"
 #include "Component/ZoomableSpringArm/ZoomableSpringArmComponent.h"
+#include "Component/SkillControllerComponent/SkillControllerComponent.h"
 
 
 
@@ -30,9 +31,9 @@ APlayerCharacter::APlayerCharacter()
 	if (BP_PLAYER_CHARACTER_ANIM_INST.Succeeded())
 		BP_PlayerCharacterAnimInst = BP_PLAYER_CHARACTER_ANIM_INST.Class;
 
-	// TODO
-	// 컴포넌트 추가
-
+	
+	// 컴포넌트 생성
+	skillController = CreateDefaultSubobject<USkillControllerComponent>(TEXT("SKILL_CONTROLLER"));
 	CharacterMovementHelper = CreateDefaultSubobject<UCharacterMovementHelperComponent>(TEXT("MOVEMENT_HELPER"));
 	SpringArm = CreateDefaultSubobject<UZoomableSpringArmComponent>(TEXT("SPRING_ARM"));
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("CAMERA"));
@@ -168,5 +169,7 @@ void APlayerCharacter::InitializeMeshs()
 
 void APlayerCharacter::RegularAttack()
 {
-	
+	skillController->RequestSkill(FName(TEXT("1000")));
+
+	UE_LOG(LogTemp, Log, TEXT("RequestSkill"));
 }

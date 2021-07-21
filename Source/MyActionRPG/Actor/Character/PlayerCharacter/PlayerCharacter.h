@@ -33,7 +33,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere, meta = (AllowPrivateAccess = "true"))
 	class UCharacterMovementHelperComponent* CharacterMovementHelper;
-	
+
+	UPROPERTY(VisibleAnywhere, meta = (AllowPrivateAccess = "true"))
+	class USkillControllerComponent* skillController;
 	
 #pragma endregion
 
@@ -82,6 +84,11 @@ public:
 	FORCEINLINE class UCharacterMovementHelperComponent* GetCharacterMovementHelper() const
 	{
 		return CharacterMovementHelper;
+	}
+
+	FORCEINLINE class USkillControllerComponent* GetSkillController() const
+	{
+		return skillController;
 	}
 
 	FORCEINLINE TMap<EPartsType, class USkeletalMeshComponent*>& GetParts()

@@ -6,6 +6,8 @@
 #include "Single/GameInstance/RPGGameInst.h"
 
 #include "Actor/Character/PlayerCharacter/PlayerCharacter.h"
+#include "Actor/Level/BaseLevelScriptActor.h"
+
 
 // Sets default values for this component's properties
 USkillControllerComponent::USkillControllerComponent()
@@ -31,7 +33,7 @@ void USkillControllerComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	
+	CurrentLevel = Cast<ABaseLevelScriptActor>(GetWorld()->GetLevelScriptActor());
 }
 
 
@@ -113,6 +115,7 @@ void USkillControllerComponent::UpdateUsedSkillInfo(FSkillInfo* newSkillInfo)
 
 void USkillControllerComponent::CastSkill(FSkillInfo* skillInfo)
 {
+	UE_LOG(LogTemp, Log, TEXT("CastSkill Begin"));
 	// 새로운 스킬을 현재 사용 스킬로 설정함
 	CurrentSkillInfo = skillInfo;
 
@@ -147,6 +150,8 @@ void USkillControllerComponent::CastSkill(FSkillInfo* skillInfo)
 	}
 
 	PlayerCharacter->PlayAnimMontage(skillAnimMontage);
+
+	UE_LOG(LogTemp, Log, TEXT("CastSkill End"));
 }
 
 void USkillControllerComponent::MakeSkillRange(
@@ -177,23 +182,131 @@ void USkillControllerComponent::MakeSkillRange(
 
 	for (FHitResult hitresult : hitResults)
 	{
-		//
+		CurrentLevel->CreatePoolableParticleActor(
+			Cast<UParticleSystem>(GetManager(FStreamableManager)->LoadSynchronous(skillInfo->HitParticle)),
+			hitresult.ImpactPoint);
 	}
 }
 
 void USkillControllerComponent::RequestSkill(FName skillCode)
 {
+	UE_LOG(LogTemp, Log, TEXT("RequestSkill Start"))
+	// 스킬을 요청할 수 없는 경우 실행하지 않음
+	if (!bIsRequestable)
+	{
+		UE_LOG(LogTemp, Log, TEXT("bIsRequestable is false"));
+		return;
+	}	
+	
+	// 스킬이 3개 이상 등록됐다면 실행하지 않음
+	if (SkillCount >= 3)
+		return;
+
+	FString contextString;
+	FSkillInfo* requestSkillInfo = DT_SkillInfo->FindRow<FSkillInfo>(skillCode, contextString);
+
+	// 요청한 스킬을 찾지 못했을 경우 요청 취소
+	if (requestSkillInfo == nullptr)
+	{
+		UE_LOG(LogTemp, Log, TEXT("requestSkillInfo is nullptr"));
+		return;
+	}
+	// 실행시킬 스킬을 담는 큐에 추가
+	SkillQueue.Enqueue(requestSkillInfo);
+	SkillCount++;
+
+	UE_LOG(LogTemp, Log, TEXT("RequestSkill End"));
 }
 
 void USkillControllerComponent::SkillFinished()
 {
+	// 이전 스킬에 현재 스킬 정보를 저장
+	PrevSkillInfo = CurrentSkillInfo;
+	CurrentSkillInfo = nullptr;
+
+	// 스킬 요청 가능 상태로 설정
+	bIsRequestable = true;
+
+	// 사용할 스킬이 존재하지 않는다면
+	if (SkillCount == 0)
+	{
+		// 이전에 사용한 스킬을 다음에 사용되었을 때 연계 시작 가능한 상태로 설정함
+		UsedSkillInfo[PrevSkillInfo->SkillCode].SkillCombo = -1;
+
+		// 사용했던 스킬 범위 인덱스를 초기화
+		UsedSkillInfo[PrevSkillInfo->SkillCode].ResetSkillRangeIndex();
+	}
 }
 
 void USkillControllerComponent::NextSkillRangeIndex()
 {
+	// 현재 실행중인 스킬이 존재하지 않는다면 실행하지 않음
+	if (CurrentSkillInfo == nullptr)
+		return;
+
+	// 스킬 범위 인덱스 변경
+	++UsedSkillInfo[CurrentSkillInfo->SkillCode].CurrentSkillRangeIndex;
+
+	// 만약 인덱스가 배열 범위를 초과한다면 마지막 요소를 사용하도록 함
+	if (UsedSkillInfo[CurrentSkillInfo->SkillCode].CurrentSkillRangeIndex ==
+		CurrentSkillInfo->SkillRangeInfos.Num())
+		--UsedSkillInfo[CurrentSkillInfo->SkillCode].CurrentSkillRangeIndex;
 }
 
 void USkillControllerComponent::MakeSkillRange()
 {
+	int32 currentSkillRangeIndex = UsedSkillInfo[CurrentSkillInfo->SkillCode].CurrentSkillRangeIndex;
+
+	// 스킬 정보 범위를 얻음
+	FSkillRangeInfo skillRangeInfo = CurrentSkillInfo->SkillRangeInfos[currentSkillRangeIndex];
+	TTuple<int32, float> calcFormulaRes = skillRangeInfo.GetSkillCalcFormulaResult();
+	int32 rangeCount = calcFormulaRes.Get<0>();
+	float value = calcFormulaRes.Get<1>();
+
+	LOG(TEXT("form = %s"), *skillRangeInfo.DamageCalcFormula);
+
+	// sphere Tracing을 사용하지 않는다면 실행하지 않음
+	if (!skillRangeInfo.bUseSphereTrace)
+		return;
+
+	// 트레이싱 오프셋을 얻음
+	FVector tracingOffset =
+		(GetOwner()->GetActorForwardVector() * skillRangeInfo.TraceStartOffset.X) +
+		(GetOwner()->GetActorRightVector() * skillRangeInfo.TraceStartOffset.Y) +
+		(GetOwner()->GetActorUpVector() * skillRangeInfo.TraceStartOffset.Z);
+
+	// 트레이싱 시작 위치를 나타냄
+	FVector tracingStart = GetOwner()->GetActorLocation() + tracingOffset;
+
+	// 트레이싱 방향
+	FVector tracingDirection = skillRangeInfo.GetTraceDirection(GetOwner());
+
+	// 트레이싱 끝 위치
+	FVector tracingEnd = tracingStart + (tracingDirection * skillRangeInfo.TraceDistance);
+
+	// 사용하는 스킬 정보를 나타냄
+	FSkillInfo* skillInfo = CurrentSkillInfo;
+
+	for (int32 i = 0; i < rangeCount; i++)
+	{
+		if (FMath::IsNearlyZero(skillRangeInfo.CreateDelay) || (i == 0))
+		{
+			MakeSkillRange(skillInfo, tracingStart, tracingEnd, skillRangeInfo.TraceRadius, FName(TEXT("PlayerSkill")));			
+		}
+		else
+		{
+			FTimerHandle timerHandle;
+			FTimerDelegate timerDelegate;
+
+			timerDelegate.BindLambda([skillInfo, tracingStart, tracingEnd, skillRangeInfo, this]()
+				{
+					MakeSkillRange(skillInfo, tracingStart, tracingEnd, skillRangeInfo.TraceRadius, FName(TEXT("PlayerSkill")));
+				});
+
+			// 타이머 실행
+			GetWorld()->GetTimerManager().
+				SetTimer(timerHandle, timerDelegate, skillRangeInfo.CreateDelay * i, false);
+		}
+	}                      
 }
 

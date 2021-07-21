@@ -18,7 +18,7 @@ void APoolableParticle::BeginPlay()
 {
 	Super::BeginPlay();
 
-	
+	ParticleSystem->OnSystemFinished.AddDynamic(this, &APoolableParticle::OnParticleSystemFinished);
 }
 
 // Called every frame

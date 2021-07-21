@@ -21,7 +21,7 @@ private:
 	class UDataTable* DT_SkillInfo;
 
 private:
-	//class ABaseLevelScriptACtor* CurrentLevel
+	class ABaseLevelScriptActor* CurrentLevel;
 
 	// 플레이어 캐릭터를 나타냄
 	class APlayerCharacter* PlayerCharacter;
