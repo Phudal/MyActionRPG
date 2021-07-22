@@ -13,7 +13,7 @@
 #include "Component/ZoomableSpringArm/ZoomableSpringArmComponent.h"
 #include "Component/SkillControllerComponent/SkillControllerComponent.h"
 
-
+#include "Enum/Team.h"
 
 //#include "GameFramework/CharacterMovementComponent.h"
 
@@ -114,7 +114,7 @@ APlayerCharacter::APlayerCharacter()
 	Tags.Add(PLAYER_ACTOR_TAG);
 
 	// ∆¿¿ª º≥¡§«‘
-	// SetGenericTeamId(ETeam::P)
+	SetGenericTeamId(ETeam::Player);
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
