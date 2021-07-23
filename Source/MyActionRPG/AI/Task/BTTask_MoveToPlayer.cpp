@@ -19,12 +19,16 @@ EBTNodeResult::Type UBTTask_MoveToPlayer::ExecuteTask(UBehaviorTreeComponent& Ow
 	AEnemyController* enemyController = Cast<AEnemyController>(OwnerComp.GetAIOwner());	
 	APlayerCharacter* playerCharacter = GetManager(UPlayerManager)->GetPlayerCharacter();
 
-	if (!IsValid(playerCharacter))
+	if (!IsValid(playerCharacter)) 
+	{
+		UE_LOG(LogTemp, Log, TEXT("UBTTask_MoveToPlayer - Failed"));
 		return EBTNodeResult::Failed;
+	}
 
 	//enemyController->GetBlackboardComponent()->SetValueAsVector(
 	//	FName(TEXT("TargetPosition")),
 	//	playerCharacter->GetActorLocation());
 
+	UE_LOG(LogTemp, Log, TEXT("UBTTask_MoveToPlayer - Succeeded"));
 	return EBTNodeResult::Succeeded;
 }

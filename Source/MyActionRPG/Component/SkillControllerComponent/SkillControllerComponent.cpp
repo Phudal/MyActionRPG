@@ -263,7 +263,8 @@ void USkillControllerComponent::MakeSkillRange()
 	int32 rangeCount = calcFormulaRes.Get<0>();
 	float value = calcFormulaRes.Get<1>();
 
-	LOG(TEXT("form = %s"), *skillRangeInfo.DamageCalcFormula);
+	// LOG(TEXT("form = %s"), *skillRangeInfo.DamageCalcFormula);
+	UE_LOG(LogTemp, Log, TEXT("form = %s"), *skillRangeInfo.DamageCalcFormula);
 
 	// sphere Tracing을 사용하지 않는다면 실행하지 않음
 	if (!skillRangeInfo.bUseSphereTrace)

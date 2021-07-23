@@ -29,9 +29,9 @@ public:
 	/// - TrackingTargetActor 가 nullptr 인 경우 false를 반환
 	bool UpdateTrackingPosition();
 
-	bool TestingBool();
 	
 private:
+	UFUNCTION()
 	void OnSightUpdated(AActor* Actor, FAIStimulus Stimulus);
 	/// - Actor : 상태가 갱신된 액터가 전달됨
 	/// - Stimulus : 상태 갱신 결과에 대한 세부적인 정보들을 나타냄

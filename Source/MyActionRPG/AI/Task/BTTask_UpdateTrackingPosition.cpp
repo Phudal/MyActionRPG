@@ -12,10 +12,13 @@ EBTNodeResult::Type UBTTask_UpdateTrackingPosition::ExecuteTask(UBehaviorTreeCom
 	AEnemyController* enemyController = Cast<AEnemyController>(OwnerComp.GetAIOwner());
 
 	if (enemyController->UpdateTrackingPosition())
+	{
+		UE_LOG(LogTemp, Log, TEXT("BTTask_UpdateTrackingPosition - Succeeded"));
 		return EBTNodeResult::Succeeded;
-
-	else if (enemyController->TestingBool())
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("BTTask_UpdateTrackingPosition - Faild"));
 		return EBTNodeResult::Failed;
-
-	return EBTNodeResult::Failed;
+	}
 }
