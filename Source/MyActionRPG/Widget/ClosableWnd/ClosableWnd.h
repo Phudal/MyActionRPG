@@ -56,4 +56,37 @@ public:
 	/// - changeInputMode : 변경시킬 입력 모드를 전달합니다.
 	/// - bShowMouseCursor : 커서 표시 여부를 전달합니다.
 	/// - return : 생성된 창이 반환됩니다.
+	UClosableWnd* CreateChildClosableWnd(
+		TSubclassOf<UClosableWnd> closableWndClass,
+		bool bUsePrevPosition = false,
+		EInputModeType changeInputMode = EInputModeType::IM_Default,
+		bool bShowMouseCursor = true);
+
+	// 이 창을 닫음
+	UFUNCTION()
+	virtual void CloseThisWnd();
+
+	// 모든 자식 창을 닫음
+	void CloseAllChildWnd();
+
+	// 부모 창에서 떼어냄
+	void DetachFromParent();
+
+public:
+	// 이 창의 CanvasPanelSlot 을 얻음
+	class UCanvasPanelSlot* GetCanvasPanelSlot() const;
+
+	// 창의 크기를 반환
+	FORCEINLINE FVector2D GetWndSize() const
+	{
+		return WndSize;
+	}
+
+	// 창의 제목을 설정함
+	void SetTitleText(FText newTitleText);
+	
+	FORCEINLINE void SetTitleText(FString newTitleText)
+	{
+		SetTitleText(FText::FromString(newTitleText));
+	}
 };
