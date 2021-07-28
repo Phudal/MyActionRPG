@@ -9,6 +9,7 @@
 #include "Widget/WidgetControllerWidget/WidgetControllerWidget.h"
 
 #include "Components/Button.h"
+#include "DraggableWndTitle/DraggableWndTitle.h"
 
 void UClosableWnd::NativeConstruct()
 {
@@ -17,17 +18,28 @@ void UClosableWnd::NativeConstruct()
 	// 창 크기를 설정함
 	WndSize = FVector2D(500.0f, 600.0f);
 
-	// BP_Dra
+	BP_DraggableWndTitle->SetTargetWidget(this);
+
+	// 드래깅이 시작될 때 이 창을 최상단으로 배치
+	//BP_DraggableWndTitle->OnDraggingStarted.AddLambda(
+	//[this](){WidgetController->})
+
+	SetCloseButton(BP_DraggableWndTitle->GetCloseButton());
 }
 
 void UClosableWnd::SetCloseButton(UButton* closeButton)
 {
+	(CloseButton = closeButton)->OnClicked.AddDynamic(this, &UClosableWnd::CloseThisWnd);
 }
 
-UClosableWnd* UClosableWnd::CreateChildClosableWnd(TSubclassOf<UClosableWnd> closableWndClass, bool bUsePrevPosition,
-	EInputModeType changeInputMode, bool bShowMouseCursor)
-{
-}
+//UClosableWnd* UClosableWnd::CreateChildClosableWnd(TSubclassOf<UClosableWnd> closableWndClass, bool bUsePrevPosition,
+//	EInputModeType changeInputMode, bool bShowMouseCursor)
+//{
+//	// 자식 창을 생성함
+//	// auto childWnd = WidgetController->CreateWns
+//
+//	return closableWndClass;
+//}
 
 void UClosableWnd::CloseThisWnd()
 {
@@ -43,6 +55,7 @@ void UClosableWnd::DetachFromParent()
 
 UCanvasPanelSlot* UClosableWnd::GetCanvasPanelSlot() const
 {
+	return Cast<UCanvasPanelSlot>(Slot);
 }
 
 void UClosableWnd::SetTitleText(FText newTitleText)

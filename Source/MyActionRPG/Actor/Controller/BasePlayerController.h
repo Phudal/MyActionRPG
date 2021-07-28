@@ -67,4 +67,22 @@ public:
 	// TODO 윈도우 조작 추가, 카메라 뷰 변경 추가
 
 	
+	FORCEINLINE void ChangeInputModeToDefault()
+	{
+		switch (DefaultInputMode)
+		{
+		case EInputModeType::IM_GameOnly: 
+			SetInputMode(FInputModeGameOnly());
+			break;
+			
+		case EInputModeType::IM_UIOnly:
+			SetInputMode(FInputModeUIOnly());
+			break;
+
+		case EInputModeType::IM_GameAndUI:
+			SetInputMode(FInputModeGameAndUI());
+			break;
+		}
+	}
+	
 };
