@@ -56,11 +56,11 @@ public:
 	/// - changeInputMode : 변경시킬 입력 모드를 전달합니다.
 	/// - bShowMouseCursor : 커서 표시 여부를 전달합니다.
 	/// - return : 생성된 창이 반환됩니다.
-	/*UClosableWnd* CreateChildClosableWnd(
+	UClosableWnd* CreateChildClosableWnd(
 		TSubclassOf<UClosableWnd> closableWndClass,
 		bool bUsePrevPosition = false,
 		EInputModeType changeInputMode = EInputModeType::IM_Default,
-		bool bShowMouseCursor = true);*/
+		bool bShowMouseCursor = true);
 
 	// 이 창을 닫음
 	UFUNCTION()

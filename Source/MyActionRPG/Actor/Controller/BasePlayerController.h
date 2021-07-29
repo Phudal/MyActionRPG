@@ -23,10 +23,11 @@ class MYACTIONRPG_API ABasePlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
-//private:
-	// TSubclassOf<class UWidgetControllerWidget> BP_WidgetController;
+private:
+	TSubclassOf<class UWidgetControllerWidget> BP_WidgetController;
 
 protected:
+	class UWidgetControllerWidget* WidgetControllerWidget;
 	EInputModeType DefaultInputMode;
 	bool bDefaultCursorVisibility;
 	
@@ -38,6 +39,11 @@ protected:
 	virtual void OnPossess(APawn* InPawn) override;
 
 public:
+	FORCEINLINE class UWidgetControllerWidget* GetWidgetControllerWidget() const
+	{
+		return WidgetControllerWidget;
+	}
+	
 	FORCEINLINE EInputModeType GetDefaultInputMode() const
 	{
 		return DefaultInputMode;

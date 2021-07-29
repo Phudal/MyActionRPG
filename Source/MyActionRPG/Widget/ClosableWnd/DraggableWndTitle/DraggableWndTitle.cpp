@@ -78,7 +78,7 @@ void UDraggableWndTitle::OnWidgetDragFinished()
 	bIsDragging = false;
 }
 
-void UDraggableWndTitle::SetTitleTexT(FText newTitleText)
+void UDraggableWndTitle::SetTitleText(FText newTitleText)
 {
 	Text_Title->SetText(newTitleText);
 }

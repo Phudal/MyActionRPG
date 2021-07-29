@@ -69,7 +69,7 @@ private:
 	void OnWidgetDragFinished();
 
 public:
-	void SetTitleTexT(FText newTitleText);
+	void SetTitleText(FText newTitleText);
 
 	FORCEINLINE void SetTargetWidget(UUserWidget* targetWidget)
 	{

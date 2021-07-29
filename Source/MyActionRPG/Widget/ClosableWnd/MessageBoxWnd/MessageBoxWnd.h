@@ -64,5 +64,5 @@ private:
 	void OnOkButtonClikced();
 
 	UFUNCTION()
-	void OnCancelButtonClicked();	
+	void OnCancelButtonClicked();
 };
