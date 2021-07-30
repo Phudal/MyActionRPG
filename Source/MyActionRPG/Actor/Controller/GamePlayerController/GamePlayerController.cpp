@@ -32,7 +32,8 @@ void AGamePlayerController::OnPossess(APawn* InPawn)
 	GetManager(UPlayerManager)->InitializePlayerCharacter();
 	// --------------------------------------------------------------///
 
-	TestingWnd();
+	// 윈도우 테스트용 코드
+	// TestingWnd();
 }
 
 void AGamePlayerController::MouseXInput(float axis)
