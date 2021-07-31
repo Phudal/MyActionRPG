@@ -80,7 +80,7 @@ protected:
 	virtual void NativeOnMouseLeave(const FPointerEvent& InMouseEvent) override final;
 
 	// 해당 위젯에 마우스 클릭 입력이 있을 경우 호출
-	//virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override final;
+	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override final;
 	///// - FReply : 이벤트가 어떠한 방법으로 처리되었는 지 알리기 위한 형식
 	///// - InGeometry : 위젯의 위치, 크기를 나타냄
 	///// - InMouseEvent : 마우스 입력 이벤트의 종류
@@ -96,4 +96,53 @@ protected:
 
 	// 드래그가 끝났을 경우 호출되는 메서드
 	virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override final;
+
+public:
+	// 슬롯을 초기화함
+	virtual void InitializeSlot(ESlotType slotTpye, FName inCode);
+
+	// 슬롯에 표시되는 숫자를 설정함
+	/// - itemCount : 표시시킬 아이템 개수를 전달함
+	/// - bVisible01Count : 0 이나 1 일 경우에도 표시할 것인지를 전달함
+	void SetSlotItemCount(int32 itemCount, bool bVisible01Count = false);
+
+private:
+	// 슬롯 배경을 기본 색상으로 표시함
+	void ShowSlotNormalSlate();
+
+	// 슬롯 배경을 마우스 겹침 상태로 표시함
+	void ShowSlotHorverState();
+
+	// 슬롯 배경을 눌림 상태로 표시함
+	void ShowSlotPressedState();
+
+public:
+	// 슬롯 이미지 색상을 기본 / 드래깅 색상으로 설정함
+	void SetSlotColorNormal();
+	void SetSlotColorDragging();
+
+// protected:
+	// TTuple<UUserWidget*, class UImage*> CreateSlotDragImage();
+	/// - 튜플
+	/// - 형식의 이름을 가지지 않고, 여러 필드를 담을 수 있는 구조체
+	/// - 보통 튜플은 응용프로그램 전체에서 사용할 형식을 선언할 때가 아닌,
+	///   암시적으로 사용할 복합 데이터 형식을 선언할 때 사용함
+	/// - 언리얼에서 TTuple<Type..> 형식으로 선언할 수 있으며, MakeTuple() 을 통해 하나의 데이터를 생성할 수 있음
+	/// - 생성된 튜플의 필드에는 Get<index>()로 접근할 수 있음
+
+public:
+	FORCEINLINE class UImage* GetSlotBackgruondImage() const
+	{
+		return Image_SlotBackground;
+	}
+
+	FORCEINLINE class UImage* GetSlotImage() const
+	{
+		return Image_Slot;
+	}
+
+	FORCEINLINE ESlotType GetSlotType() const
+	{
+		return SlotType;
+	}
 };
