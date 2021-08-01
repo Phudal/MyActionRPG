@@ -81,15 +81,15 @@ protected:
 
 	// 해당 위젯에 마우스 클릭 입력이 있을 경우 호출
 	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override final;
-	///// - FReply : 이벤트가 어떠한 방법으로 처리되었는 지 알리기 위한 형식
-	///// - InGeometry : 위젯의 위치, 크기를 나타냄
-	///// - InMouseEvent : 마우스 입력 이벤트의 종류
+	/// - FReply : 이벤트가 어떠한 방법으로 처리되었는 지 알리기 위한 형식
+	/// - InGeometry : 위젯의 위치, 크기를 나타냄
+	/// - InMouseEvent : 마우스 입력 이벤트의 종류
 
-	//// 마우스 클릭 입력이 끝날 경우 호출됨
-	//virtual FReply NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override final;
+	// 마우스 클릭 입력이 끝날 경우 호출됨
+	virtual FReply NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override final;
 
-	//// 이 위젯이 더블 클릭되었을 경우 호출됨
-	//virtual FReply NativeOnMouseButtonDoubleClick(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override final;
+	// 이 위젯이 더블 클릭되었을 경우 호출됨
+	virtual FReply NativeOnMouseButtonDoubleClick(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override final;
 
 	// 해당 위젯에 드래그 이벤트가 발생했을 경우 호출됨
 	virtual void NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation) override final;
@@ -99,7 +99,7 @@ protected:
 
 public:
 	// 슬롯을 초기화함
-	virtual void InitializeSlot(ESlotType slotTpye, FName inCode);
+	virtual void InitializeSlot(ESlotType slotType, FName inCode);
 
 	// 슬롯에 표시되는 숫자를 설정함
 	/// - itemCount : 표시시킬 아이템 개수를 전달함
@@ -121,8 +121,8 @@ public:
 	void SetSlotColorNormal();
 	void SetSlotColorDragging();
 
-// protected:
-	// TTuple<UUserWidget*, class UImage*> CreateSlotDragImage();
+protected:
+	 TTuple<UUserWidget*, class UImage*> CreateSlotDragImage();
 	/// - 튜플
 	/// - 형식의 이름을 가지지 않고, 여러 필드를 담을 수 있는 구조체
 	/// - 보통 튜플은 응용프로그램 전체에서 사용할 형식을 선언할 때가 아닌,

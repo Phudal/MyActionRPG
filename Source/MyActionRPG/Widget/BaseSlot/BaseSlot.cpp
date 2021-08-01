@@ -56,56 +56,142 @@ FReply UBaseSlot::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPo
 	auto retVal = Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
 
 	// 입력된 마우스 버튼을 확인
+	if (InMouseEvent.GetEffectingButton() == EKeys::LeftMouseButton)
+	{
+		// 슬롯을 눌림 상태로 표시함
+		ShowSlotPressedState();
+
+		// 왼쪽 클릭 이벤트를 발생시킴
+		if (OnMouseLeftButtonClicked.IsBound())
+			OnMouseLeftButtonClicked.Broadcast(SlotType);
+
+		if (bAllowDragOperation)
+		{
+			// 드래그 앤 드롭 작업을 시작하며, 작업 결과를 반환함
+			return UWidgetBlueprintLibrary::DetectDragIfPressed(
+				InMouseEvent, this, EKeys::LeftMouseButton).NativeReply;
+			/// - PointEvent : 마우스 입력 이벤트를 전달함
+			/// - WidgetDetectingDrag : 드래그를 감지할 객체
+			/// - DragKey : 드래그를 감지할 때 사용할 키
+		}
+	}
+
+	else if (InMouseEvent.GetEffectingButton() == EKeys::RightMouseButton)
+	{
+		// 오른쪽 클릭 이벤트를 발생시킴
+		if (OnMouseRightButtonClicked.IsBound())
+			OnMouseRightButtonClicked.Broadcast(SlotType);
+	}
+	
 	return retVal;
 }
 
-//FReply UBaseSlot::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
-//{
-//}
-//
-//FReply UBaseSlot::NativeOnMouseButtonDoubleClick(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
-//{
-//}
+FReply UBaseSlot::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	ShowSlotNormalSlate();
+
+	return Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
+}
+
+FReply UBaseSlot::NativeOnMouseButtonDoubleClick(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	auto retVal = Super::NativeOnMouseButtonDoubleClick(InGeometry, InMouseEvent);
+
+	if (InMouseEvent.GetEffectingButton() == EKeys::LeftMouseButton)
+	{
+		// 슬롯을 기본 상태로 표시함
+		ShowSlotNormalSlate();
+
+		// 더블 클릭 이벤트 발생
+		if (OnMouseLeftButtonDBClicked.IsBound())
+			OnMouseLeftButtonDBClicked.Broadcast(SlotType);
+
+		// 마우스 더블 클릭 이벤트가 처리되었음을 알림
+		return FReply::Handled();
+	}
+
+	return retVal;
+}
 
 void UBaseSlot::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent,
 	UDragDropOperation*& OutOperation)
 {
+	Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
+
+	// 슬롯을 기본 상태로 표시함
+	ShowSlotNormalSlate();
+
+	// 드래그 드랍 작업 객체를 생성함
+	USlotDragDropOperation* dragDropOperation = Cast<USlotDragDropOperation>(
+		UWidgetBlueprintLibrary::CreateDragDropOperation(USlotDragDropOperation::StaticClass()));
+
+	// 드래그 시작 위젯을 설정함
+	dragDropOperation->OriginatedDragSlot = this;
+
+	// 슬롯 드래그 시작 이벤트 발생
+	if (OnSlotDragStarted.IsBound())
+		OnSlotDragStarted.Broadcast(dragDropOperation);
+
+	// 출력용 매개 변수에 드래그 앤 드롭 작업 객체를 설정함
+	OutOperation = dragDropOperation;
 }
 
 bool UBaseSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent,
 	UDragDropOperation* InOperation)
 {
+	Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
+
+	if (OnSlotDragFinished.IsBound())
+		OnSlotDragFinished.Broadcast(Cast<USlotDragDropOperation>(InOperation));
+	
 	return true;
 }
 
-void UBaseSlot::InitializeSlot(ESlotType slotTpye, FName inCode)
+void UBaseSlot::InitializeSlot(ESlotType slotType, FName inCode)
 {
+	SlotType = slotType;
+	InCode = inCode;
 }
 
 void UBaseSlot::SetSlotItemCount(int32 itemCount, bool bVisible01Count)
 {
+	FText itemCountText = FText::FromString(FString::FromInt(itemCount));
+
+	Text_ItemCount->SetText(
+		(!bVisible01Count && itemCount <= 1) ?
+		FText() : itemCountText);
 }
 
 void UBaseSlot::ShowSlotNormalSlate()
 {
+	GetSlotBackgruondImage()->SetColorAndOpacity(FLinearColor(1.0f, 1.0f, 1.0f));
 }
 
 void UBaseSlot::ShowSlotHorverState()
 {
+	GetSlotBackgruondImage()->SetColorAndOpacity(FLinearColor(1.0f, 0.8f, 0.3f));
 }
 
 void UBaseSlot::ShowSlotPressedState()
 {
+	GetSlotBackgruondImage()->SetColorAndOpacity(FLinearColor(0.2f, 0.2f, 0.2f));
 }
 
 void UBaseSlot::SetSlotColorNormal()
 {
+	GetSlotImage()->SetBrushTintColor(FLinearColor(1.0f, 1.0f, 1.0f));
 }
 
 void UBaseSlot::SetSlotColorDragging()
 {
+	GetSlotImage()->SetBrushTintColor(FLinearColor(0.2f, 0.2f, 0.2f));
 }
 
-//TTuple<UUserWidget*, UImage*> UBaseSlot::CreateSlotDragImage()
-//{
-//}
+TTuple<UUserWidget*, UImage*> UBaseSlot::CreateSlotDragImage()
+{
+	// 드래그 앤 드랍 시 보여질 위젯을 생성함
+	auto slotDragWidget = CreateWidget<UUserWidget>(this, BP_SlotDragImage);
+	auto image_drag = Cast<UImage>(slotDragWidget->GetWidgetFromName(TEXT("Image_Drag")));
+
+	return MakeTuple(slotDragWidget, image_drag);
+}
