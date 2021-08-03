@@ -15,7 +15,7 @@
 #ifndef FN_PTR_DEFINE
 #define FN_PTR_DEFINE
 
-#define Action(fnPtrName, ParamTypes)			void *(fnPtrName)ParamTypes
+#define Action(fnPtrName, ParamTypes)			void(*fnPtrName)ParamTypes
 #define Func(RetType, fnPtrName, ParamTypes)	RetType(*fnPtrName)ParamTypes
 #endif
 

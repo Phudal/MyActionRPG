@@ -3,3 +3,6 @@
 
 #include "Widget/ClosableWnd/PlayerInventoryWnd/PlayerInventoryWnd.h"
 
+void UPlayerInventoryWnd::UpdateInventoryItemSlots()
+{
+}

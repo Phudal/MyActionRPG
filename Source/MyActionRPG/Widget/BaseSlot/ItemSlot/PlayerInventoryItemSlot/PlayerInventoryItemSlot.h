@@ -32,7 +32,7 @@ public:
 	void UpdateInventoryItemSlot();
 
 	// 장비 아이템을 장착함
-	void AttachToEquipItemSlot(class UPlayerEquipSlot* = nullptr);
+	void AttachToEquipItemSlot(class UPlayerEquipSlot* targetEquipSlot = nullptr);
 
 private:
 	// 아이템 개수 텍스트를 갱신함

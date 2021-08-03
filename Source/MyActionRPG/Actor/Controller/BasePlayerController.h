@@ -26,6 +26,11 @@ class MYACTIONRPG_API ABasePlayerController : public APlayerController
 private:
 	TSubclassOf<class UWidgetControllerWidget> BP_WidgetController;
 
+private:
+	UPROPERTY()
+	class UPlayerBehaviorBroadcastComponent* PlayerBehaviorBroadcast;
+
+	
 protected:
 	class UWidgetControllerWidget* WidgetControllerWidget;
 	EInputModeType DefaultInputMode;
@@ -42,6 +47,11 @@ public:
 	FORCEINLINE class UWidgetControllerWidget* GetWidgetControllerWidget() const
 	{
 		return WidgetControllerWidget;
+	}
+
+	FORCEINLINE class UPlayerBehaviorBroadcastComponent* GetPlayerBehaviorBroadcast() const
+	{
+		return PlayerBehaviorBroadcast;
 	}
 	
 	FORCEINLINE EInputModeType GetDefaultInputMode() const

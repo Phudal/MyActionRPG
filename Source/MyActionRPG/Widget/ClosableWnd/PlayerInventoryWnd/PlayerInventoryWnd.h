@@ -14,4 +14,8 @@ class MYACTIONRPG_API UPlayerInventoryWnd : public UClosableWnd
 
 //private:
 //	TSubclassOf<class UPlayerInventoryItemSlot>
+
+public:
+	// 인벤토리 아이템 슬롯들을 갱신함
+	void UpdateInventoryItemSlots();
 };
