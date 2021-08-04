@@ -31,7 +31,7 @@ UPlayerInventory::UPlayerInventory()
 		BP_PlayerInventory = BP_PLAYER_INVENTORY_WND.Class;
 
 	static ConstructorHelpers::FClassFinder<UPlayerEquipItemWnd> BP_PLAYER_EQUIP_ITEM_WND(
-		TEXT("WidgetBlueprint'/Game/Bluepritns/Widget/ClosableWnd/EquipItemWnd/BP_EquipItemWnd.BP_EquipItemWnd_C'"));
+		TEXT("WidgetBlueprint'/Game/Blueprints/Widget/ClosableWnd/EquipItemWnd/BP_EquipItemWnd.BP_EquipItemWnd_C'"));
 
 	if (BP_PLAYER_EQUIP_ITEM_WND.Succeeded())
 		BP_EquipItemWnd = BP_PLAYER_EQUIP_ITEM_WND.Class;
@@ -329,9 +329,7 @@ void UPlayerInventory::UpdateCharacterVisual()
 }
 
 void UPlayerInventory::UpdateCharacterVisual(EPartsType updateParts, FEquipItemInfo* equipItemInfo)
-{
-	// TODO 이어서 구현
-	
+{	
 	// 플레이어 캐릭터 정보
 	FPlayerCharacterInfo* PlayerCharacterInfo = GetManager(UPlayerManager)->GetPlayerInfo();
 

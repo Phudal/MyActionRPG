@@ -21,6 +21,13 @@ private:
 	// 창에 표시되는 슬롯들
 	TMap<EPartsType, class UPlayerEquipSlot*> EquipSlots;
 
+protected:
+	virtual void NativeConstruct() override;
+	
+public:
+	// 파츠 슬롯들을 갱신함
+	void UpdatePartsSlot();
+	
 public:
 	FORCEINLINE class UPlayerEquipSlot* GetPlayerEquipSlot(EPartsType partsTypes) const
 	{

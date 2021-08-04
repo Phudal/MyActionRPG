@@ -187,7 +187,7 @@ void UBaseSlot::SetSlotColorDragging()
 	GetSlotImage()->SetBrushTintColor(FLinearColor(0.2f, 0.2f, 0.2f));
 }
 
-TTuple<UUserWidget*, UImage*> UBaseSlot::CreateSlotDragImage()
+TTuple<UUserWidget*, UImage*> UBaseSlot::CreateSlotDragWidget()
 {
 	// 드래그 앤 드랍 시 보여질 위젯을 생성함
 	auto slotDragWidget = CreateWidget<UUserWidget>(this, BP_SlotDragImage);

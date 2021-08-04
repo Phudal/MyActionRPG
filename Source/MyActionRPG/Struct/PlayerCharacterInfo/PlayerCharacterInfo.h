@@ -52,8 +52,9 @@ public:
 	UPROPERTY()
 	TMap<EPartsType, FItemSlotInfo> DefaultPartsInfos;
 
+
 	// 장착 아이템 정보
-	UPROPERTY()
+	UPROPERTY()	
 	TMap<EPartsType, FItemSlotInfo> PartsInfos;
 
 	// 소지금

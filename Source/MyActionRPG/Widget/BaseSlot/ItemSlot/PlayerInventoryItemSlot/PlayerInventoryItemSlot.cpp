@@ -41,7 +41,7 @@ void UPlayerInventoryItemSlot::NativeConstruct()
 			if (GetItemInfo()->IsEmpty())
 				return;
 
-			auto dragWidgetData = CreateSlotDragImage();
+			auto dragWidgetData = CreateSlotDragWidget();
 			auto dragWidgetInstance = dragWidgetData.Get<0>();
 			auto dragWidgetImage = dragWidgetData.Get<1>();
 
@@ -195,9 +195,17 @@ void UPlayerInventoryItemSlot::AttachToEquipItemSlot(UPlayerEquipSlot* targetEqu
 	FItemSlotInfo prevEquippedItemInfo;
 
 	// 아이템 장착
-	// playerInventory->equip
+	playerInventory->EquipItem(GetItemInfo()->ItemCode, &prevEquippedItemInfo);	
 	
 	// 해당 슬롯을 비움
+	playerInventory->RemoveItem(GetItemSlotIndex());
+
+	// 장비창 갱신
+	if (IsValid(playerEquipItemWnd))
+		playerEquipItemWnd->UpdatePartsSlot();
+
+	// 전에 장착했던 아이템을 인벤토리에 추가함
+	playerInventory->AddItem(prevEquippedItemInfo);
 }
 
 void UPlayerInventoryItemSlot::UpdateItemCountText()

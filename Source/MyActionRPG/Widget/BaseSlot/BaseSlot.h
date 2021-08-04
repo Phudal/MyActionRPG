@@ -122,7 +122,7 @@ public:
 	void SetSlotColorDragging();
 
 protected:
-	 TTuple<UUserWidget*, class UImage*> CreateSlotDragImage();
+	 TTuple<UUserWidget*, class UImage*> CreateSlotDragWidget();
 	/// - 튜플
 	/// - 형식의 이름을 가지지 않고, 여러 필드를 담을 수 있는 구조체
 	/// - 보통 튜플은 응용프로그램 전체에서 사용할 형식을 선언할 때가 아닌,

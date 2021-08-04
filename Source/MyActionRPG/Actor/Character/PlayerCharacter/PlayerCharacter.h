@@ -86,6 +86,11 @@ public:
 		return CharacterMovementHelper;
 	}
 
+	FORCEINLINE class UZoomableSpringArmComponent* GetSpringArm() const
+	{
+		return SpringArm;
+	}
+	
 	FORCEINLINE class USkillControllerComponent* GetSkillController() const
 	{
 		return skillController;
