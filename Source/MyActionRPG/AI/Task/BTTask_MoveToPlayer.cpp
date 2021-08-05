@@ -21,7 +21,7 @@ EBTNodeResult::Type UBTTask_MoveToPlayer::ExecuteTask(UBehaviorTreeComponent& Ow
 
 	if (!IsValid(playerCharacter)) 
 	{
-		UE_LOG(LogTemp, Log, TEXT("UBTTask_MoveToPlayer - Failed"));
+		//UE_LOG(LogTemp, Log, TEXT("UBTTask_MoveToPlayer - Failed"));
 		return EBTNodeResult::Failed;
 	}
 
@@ -29,6 +29,6 @@ EBTNodeResult::Type UBTTask_MoveToPlayer::ExecuteTask(UBehaviorTreeComponent& Ow
 	//	FName(TEXT("TargetPosition")),
 	//	playerCharacter->GetActorLocation());
 
-	UE_LOG(LogTemp, Log, TEXT("UBTTask_MoveToPlayer - Succeeded"));
+	//UE_LOG(LogTemp, Log, TEXT("UBTTask_MoveToPlayer - Succeeded"));
 	return EBTNodeResult::Succeeded;
 }

@@ -44,14 +44,14 @@ public :
 	template<typename ManagerClassType>
 	FORCEINLINE ManagerClassType* GetManagerClass()
 	{
-		UE_LOG(LogTemp, Log, TEXT("GetManagerClass"));
+		// UE_LOG(LogTemp, Log, TEXT("GetManagerClass"));
 		return Cast<ManagerClassType>(ManagerClasses[ManagerClassType::StaticClass()->GetName()]);
 	}
 	
 	template<>
 	FORCEINLINE FStreamableManager* GetManagerClass<FStreamableManager>()
 	{
-		UE_LOG(LogTemp, Log, TEXT("GetManagerClass<FStreamableManager>"));
+		// UE_LOG(LogTemp, Log, TEXT("GetManagerClass<FStreamableManager>"));
 		return &UAssetManager::GetStreamableManager();
 	}
 };

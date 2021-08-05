@@ -10,7 +10,8 @@ FPlayerCharacterInfo::FPlayerCharacterInfo()
 	// TODO - 캐릭터 추가시 제거해야함
 	CharacterClass = ECharacterClassType::CLS_Warrior;
 
-	InventorySlotCount = 50;
+	// 인벤토리 설정
+	InventorySlotCount = 66;
 
 	for (int32 i = 0; i < InventorySlotCount; i++)
 		InventoryItemInfos.Add(FItemSlotInfo());
@@ -37,8 +38,8 @@ FPlayerCharacterInfo::FPlayerCharacterInfo()
 
 	// TODO -  테스트용 코드
 	Silver = 10000;
-	InventoryItemInfos[1] = (FItemSlotInfo(FName(TEXT("12001")), 1));
-	InventoryItemInfos[12] = (FItemSlotInfo(FName(TEXT("12002")), 1));
+	//InventoryItemInfos[1] = (FItemSlotInfo(FName(TEXT("12001")), 1));
+	//InventoryItemInfos[12] = (FItemSlotInfo(FName(TEXT("12002")), 1));
 }
 
 void FPlayerCharacterInfo::InitializeDefaultEquipmentItems(

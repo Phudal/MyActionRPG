@@ -4,6 +4,7 @@
 #include "Actor/Controller/GamePlayerController/GamePlayerController.h"
 
 #include "Blueprint/UserWidget.h"
+#include "Component/WndToggler/WndTogglerComponent.h"
 #include "Single/GameInstance/RPGGameInst.h"
 #include "Single/PlayerManager/PlayerManager.h"
 #include "Widget/ClosableWnd/MessageBoxWnd/MessageBoxWnd.h"
@@ -14,8 +15,11 @@ void AGamePlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	//InputComponent->BindAction(TEXT("OpenPlayerInventoryWnd"), EInputEvent::IE_Pressed,
-	//	GetWndToggler)
+	InputComponent->BindAction(TEXT("OpenPlayerInventoryWnd"), EInputEvent::IE_Pressed, GetWndToggler(),
+		&UWndTogglerComponent::ToggleWnd<UPlayerInventory>);
+
+	InputComponent->BindAction(TEXT("OpenPlayerEquipmentWnd"), EInputEvent::IE_Pressed, GetWndToggler(),
+		&UWndTogglerComponent::ToggleWnd<UPlayerEquipItemWnd>);
 
 	InputComponent->BindAxis(TEXT("MouseX"), this, &AGamePlayerController::MouseXInput);
 	InputComponent->BindAxis(TEXT("MouseY"), this, &AGamePlayerController::MouseYInput);
@@ -33,7 +37,32 @@ void AGamePlayerController::OnPossess(APawn* InPawn)
 	// --------------------------------------------------------------///
 
 	// 윈도우 테스트용 코드
-	// TestingWnd();
+	TestingWnd();
+
+	RegisterToggleEvent();
+}
+
+void AGamePlayerController::RegisterToggleEvent()
+{
+#pragma region Player Inventory
+	FToggleEvent playerInventoryWndToggleEvent;
+	playerInventoryWndToggleEvent.BindLambda([this]()
+		{
+			GetManager(UPlayerManager)->GetPlayerInventory()->ToggleInventoryWnd(GetWidgetControllerWidget(), true);
+		});
+	GetWndToggler()->RegisterToggleEvent<UPlayerInventory>(playerInventoryWndToggleEvent);
+	
+#pragma endregion
+
+#pragma region Player EquipItem
+	FToggleEvent playerEquipItemWndToggleEvent;
+	playerEquipItemWndToggleEvent.BindLambda([this]()
+		{
+			GetManager(UPlayerManager)->GetPlayerInventory()->ToggleEquipItemWnd(GetWidgetControllerWidget());
+		});
+	GetWndToggler()->RegisterToggleEvent<UPlayerEquipItemWnd>(playerEquipItemWndToggleEvent);
+	
+#pragma endregion 
 }
 
 void AGamePlayerController::MouseXInput(float axis)
@@ -58,9 +87,11 @@ void AGamePlayerController::TestingWnd()
 
 	//UMessageBoxWnd* newMessageBoxWnd =  CreateWidget<UMessageBoxWnd>(playercontroller, MessageBoxWnd);
 
-	WidgetControllerWidget->CreateMessageBox(
-		FText::FromString("wnd"), 
-		FText::FromString("msg"), 
-true);
+//	WidgetControllerWidget->CreateMessageBox(
+//		FText::FromString("wnd"), 
+//		FText::FromString("msg"), 
+//true);
+
+	// CreateWidget<UPlayerInventoryItemSlot>();
 	
 }

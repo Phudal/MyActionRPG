@@ -287,6 +287,6 @@ void UWidgetControllerWidget::SortGridPanelElem(UUserWidget* gridPanelElem, int 
 
 	// 그리드 행과 열을 설정함
 	gridSlot->SetColumn(refCurrentColumnCount % maxColumnCount);
-	gridSlot->SetRow(refCurrentColumnCount % maxColumnCount);
+	gridSlot->SetRow(refCurrentColumnCount / maxColumnCount);
 	refCurrentColumnCount++;
 }

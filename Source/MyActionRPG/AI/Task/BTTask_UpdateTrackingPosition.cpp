@@ -13,12 +13,12 @@ EBTNodeResult::Type UBTTask_UpdateTrackingPosition::ExecuteTask(UBehaviorTreeCom
 
 	if (enemyController->UpdateTrackingPosition())
 	{
-		UE_LOG(LogTemp, Log, TEXT("BTTask_UpdateTrackingPosition - Succeeded"));
+		//UE_LOG(LogTemp, Log, TEXT("BTTask_UpdateTrackingPosition - Succeeded"));
 		return EBTNodeResult::Succeeded;
 	}
 	else
 	{
-		UE_LOG(LogTemp, Log, TEXT("BTTask_UpdateTrackingPosition - Faild"));
+		//UE_LOG(LogTemp, Log, TEXT("BTTask_UpdateTrackingPosition - Faild"));
 		return EBTNodeResult::Failed;
 	}
 }

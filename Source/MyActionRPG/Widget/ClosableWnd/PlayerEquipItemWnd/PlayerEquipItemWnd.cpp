@@ -48,5 +48,7 @@ void UPlayerEquipItemWnd::UpdatePartsSlot()
 	{
 		// 현재 장착중인 장비 아이템 중 equipSlot 과 같은 파츠에 대한 내용을 얻음
 		FItemSlotInfo& partsSlotInfo = currentPartsInfo[equipSlot.Key];
+
+		equipSlot.Value->UpdateEquipSlot(partsSlotInfo);
 	}
 }

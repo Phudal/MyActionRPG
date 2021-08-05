@@ -22,7 +22,7 @@ class MYACTIONRPG_API UPlayerInventory : public UObject
 	GENERATED_BODY()
 
 private:
-	TSubclassOf<class UPlayerInventoryWnd> BP_PlayerInventory;
+	TSubclassOf<class UPlayerInventoryWnd> BP_PlayerInventoryWnd;
 
 	TSubclassOf<class UPlayerEquipItemWnd> BP_EquipItemWnd;
 

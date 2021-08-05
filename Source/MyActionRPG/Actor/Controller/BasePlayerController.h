@@ -30,6 +30,9 @@ private:
 	UPROPERTY()
 	class UPlayerBehaviorBroadcastComponent* PlayerBehaviorBroadcast;
 
+	UPROPERTY()
+	class UWndTogglerComponent* WndToggler;
+
 	
 protected:
 	class UWidgetControllerWidget* WidgetControllerWidget;
@@ -52,6 +55,11 @@ public:
 	FORCEINLINE class UPlayerBehaviorBroadcastComponent* GetPlayerBehaviorBroadcast() const
 	{
 		return PlayerBehaviorBroadcast;
+	}
+
+	FORCEINLINE class UWndTogglerComponent* GetWndToggler() const
+	{
+		return WndToggler;
 	}
 	
 	FORCEINLINE EInputModeType GetDefaultInputMode() const

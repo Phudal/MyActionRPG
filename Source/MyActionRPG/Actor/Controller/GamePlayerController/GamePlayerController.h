@@ -19,6 +19,9 @@ protected:
 	virtual void OnPossess(APawn* InPawn) override;
 
 private:
+	void RegisterToggleEvent();
+	
+private:
 	// MouseX, MouseY 입력에 바인딩될 메서드
 	void MouseXInput(float axis);
 	void MouseYInput(float axis);

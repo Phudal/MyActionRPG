@@ -8,6 +8,9 @@
 
 #include "Actor/Character/PlayerCharacter/PlayerCharacter.h"
 
+#include "Component/WndToggler/WndTogglerComponent.h"
+#include "Component/PlayerBehaviorBroadcast/PlayerBehaviorBroadcastComponent.h"
+
 #include "Widget/WidgetControllerWidget/WidgetControllerWidget.h"
 
 #include "Components/CanvasPanelSlot.h"
@@ -31,7 +34,11 @@ ABasePlayerController::ABasePlayerController()
 	
 	// TODO 커맨드 위젯 추가
 
-	// TODO PlayerBehaviorBroadCast, WndToggler 추가
+	PlayerBehaviorBroadcast = CreateDefaultSubobject<UPlayerBehaviorBroadcastComponent>
+		(TEXT("PLAYER_BH_BROADCAST"));
+
+	WndToggler = CreateDefaultSubobject<UWndTogglerComponent>
+		(TEXT("WND_TOGGLER"));
 
 	DefaultInputMode = EInputModeType::IM_GameOnly;
 	bDefaultCursorVisibility = false;
